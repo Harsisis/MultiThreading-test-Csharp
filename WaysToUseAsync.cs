@@ -115,5 +115,22 @@ namespace TaskTest {
             return "";
         }
 
+        public static async Task<int> DelayedTasks() {
+            Task<int> task1 = new (() => SimpleAsyncUsage.DoWork("task1", 3000));
+            Task<int> task2 = new (() => SimpleAsyncUsage.DoWork("task2", 2000));
+            Task<int> task3 = new (() => SimpleAsyncUsage.DoWork("task3", 4000));
+            List<Task<int>> allTasks = new List<Task<int>> { task1, task2, task3 };
+            allTasks.ForEach(task => {
+                task.Start();
+            });
+            await Task.WhenAll(allTasks);
+            int res = 0;
+            allTasks.ForEach(task => {
+                res += task.Result;
+            });
+            Console.WriteLine("timer total : {0}", res + 500);
+            return res + 500;
+        }
+
     }
 }

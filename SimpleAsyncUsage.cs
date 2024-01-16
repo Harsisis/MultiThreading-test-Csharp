@@ -72,6 +72,13 @@ namespace TaskTest {
                 return await response.Content.ReadAsStringAsync();
             }
         }
+
+        public static int DoWork(string taskName, int delayMilliseconds) {
+            Console.WriteLine("{0} starting...", taskName);
+            Task.Delay(delayMilliseconds).Wait();
+            Console.WriteLine("{0} completed.", taskName);
+            return delayMilliseconds;
+        }
     }
 
     public class Input
