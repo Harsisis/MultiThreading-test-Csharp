@@ -62,6 +62,7 @@ namespace TaskTest {
 
             var todo1 = SimpleAsyncUsage.CallJsonPlaceHolder1();
             var todo2 = SimpleAsyncUsage.CallJsonPlaceHolder2();
+            var joke = todo1.ContinueWith(() => { SimpleAsyncUsage.GetAJoke(); });
 
             var allTasks = new List<Task> { todo1, todo2 };
             var randomNumber = 0;

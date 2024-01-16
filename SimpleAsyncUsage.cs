@@ -32,6 +32,9 @@ namespace TaskTest {
             }
         }
 
+        /**
+         * get input from jsonPlaceHolder id : 1
+         */
         public static async Task<Input> CallJsonPlaceHolder1() {
             try {
                 var client = new HttpClient();
@@ -46,6 +49,9 @@ namespace TaskTest {
             return null;
         }
 
+        /**
+         * get input from jsonPlaceHolder id : 2
+         */
         public static async Task<Input> CallJsonPlaceHolder2() {
             try {
                 var client = new HttpClient();
@@ -58,6 +64,21 @@ namespace TaskTest {
                 Console.WriteLine(ex.ToString());
             }
             return null;
+        }
+
+        /**
+         * get joke as string from official joke api
+         */
+        public static async Task<string> GetAJoke() {
+            try {
+                var client = new HttpClient();
+                HttpResponseMessage response = await client.GetAsync("https://official-joke-api.appspot.com/random_joke");
+
+                return await response.Content.ReadAsStringAsync();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.ToString());
+            }
+            return "";
         }
     }
 
