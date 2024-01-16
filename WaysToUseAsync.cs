@@ -132,5 +132,15 @@ namespace TaskTest {
             return res + 500;
         }
 
+        public static void ParallelHeavyComputation() {
+            Parallel.Invoke(
+                () => SimpleAsyncUsage.HeavyComputation("A"),
+                () => SimpleAsyncUsage.HeavyComputation("B"),
+                () => SimpleAsyncUsage.HeavyComputation("C"),
+                () => SimpleAsyncUsage.HeavyComputation("D"),
+                () => SimpleAsyncUsage.HeavyComputation("E")
+            );
+        }
+
     }
 }

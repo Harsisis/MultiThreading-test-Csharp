@@ -22,8 +22,15 @@ timer.Stop();
 Console.WriteLine("{0} DoTasksContinueWith", timer.Elapsed.ToString());*/
 
 
-timer.Reset();
+/*timer.Reset();
 timer.Start();
 await WaysToUseAsync.DelayedTasks();
 timer.Stop();
-Console.WriteLine("{0} DelayedTasks", timer.Elapsed.ToString());
+Console.WriteLine("{0} DelayedTasks", timer.Elapsed.ToString());*/
+
+
+timer.Reset();
+timer.Start();
+WaysToUseAsync.ParallelHeavyComputation();
+timer.Stop();
+Console.WriteLine("{0} ParallelHeavyComputation", timer.Elapsed.ToString());
