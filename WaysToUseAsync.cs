@@ -60,13 +60,13 @@ namespace TaskTest {
         {
             Console.WriteLine("{0} Entering in method DoTasksV5", DateTime.Now);
 
-            var todo1 = SimpleAsyncUsage.CallJsonPlaceHolder1();
-            var todo2 = SimpleAsyncUsage.CallJsonPlaceHolder2();
-            var joke = todo1.ContinueWith(() => { SimpleAsyncUsage.GetAJoke(); });
+            var todo1 = SimpleAsyncUsage.CallJsonPlaceHolder(1);
+            var todo2 = SimpleAsyncUsage.CallJsonPlaceHolder(2);
+            var joke = SimpleAsyncUsage.GetAJoke();
 
-            var allTasks = new List<Task> { todo1, todo2 };
-            var randomNumber = 0;
-            var upperString = string.Empty;
+            List<Task> allTasks = new List<Task> { todo1, todo2 };
+            int randomNumber = 0;
+            string upperString = string.Empty;
 
             while (allTasks.Count > 0)
             {
@@ -74,15 +74,45 @@ namespace TaskTest {
                 if (finishedTask == todo1)
                 {
                     Console.WriteLine("todo 1 :\n {0}", todo1.Result);
+                    await Task.Factory.StartNew(() => SimpleAsyncUsage.CallJsonPlaceHolder(3)); // not called
                 }
                 else if (finishedTask == todo2)
                 {
                     Console.WriteLine("todo 2 :\n {0}", todo2.Result);
-                }
+                } 
                 allTasks.Remove(finishedTask);
             }
             Console.WriteLine("{0} Out of method DoTasksV5", DateTime.Now);
+
             return string.Format("{0}-{1}", randomNumber, upperString);
+        }
+
+        public static async Task<string> DoTasksContinueWith() {
+
+            var t1 = Task.Run(() => 5);
+            var t2 = t1.ContinueWith(t => t.Result * 2);
+            var t3 = t2.ContinueWith(t => t.Result + 10);
+
+            t3.ContinueWith(t => Console.WriteLine(t.Result));
+
+
+
+            Console.Out.WriteLine("Start continueTasks");
+
+            Task<string> originalTask = SimpleAsyncUsage.FetchDataAsync();
+
+            Task continuationTask = originalTask.ContinueWith(task =>
+            {
+                if (task.Status == TaskStatus.RanToCompletion) {
+                    Console.WriteLine(task.Result);
+                    Console.WriteLine("The task has run successfully");
+                } else if (task.Status == TaskStatus.Faulted) {
+                    Console.WriteLine("An error occured during call");
+                }
+            });
+
+            await continuationTask;
+            return "";
         }
 
     }

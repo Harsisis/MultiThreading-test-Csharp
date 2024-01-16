@@ -33,30 +33,13 @@ namespace TaskTest {
         }
 
         /**
-         * get input from jsonPlaceHolder id : 1
+         * get input from jsonPlaceHolder with id
          */
-        public static async Task<Input> CallJsonPlaceHolder1() {
+        public static async Task<Input> CallJsonPlaceHolder(int id) {
             try {
                 var client = new HttpClient();
                 Task<string> task = await Task.Factory.StartNew(() => {
-                    return client.GetStringAsync("https://jsonplaceholder.typicode.com/todos/1");
-                });
-
-                return JsonConvert.DeserializeObject<Input>(task.Result);
-            } catch (Exception ex) {
-                Console.WriteLine(ex.ToString());
-            }
-            return null;
-        }
-
-        /**
-         * get input from jsonPlaceHolder id : 2
-         */
-        public static async Task<Input> CallJsonPlaceHolder2() {
-            try {
-                var client = new HttpClient();
-                Task<string> task = await Task.Factory.StartNew(() => {
-                    return client.GetStringAsync("https://jsonplaceholder.typicode.com/todos/2");
+                    return client.GetStringAsync(string.Format("https://jsonplaceholder.typicode.com/todos/{0}", id));
                 });
 
                 return JsonConvert.DeserializeObject<Input>(task.Result);
@@ -79,6 +62,15 @@ namespace TaskTest {
                 Console.WriteLine(ex.ToString());
             }
             return "";
+        }
+
+        public static async Task<string> FetchDataAsync() {
+            using (HttpClient httpClient = new HttpClient()) {
+                HttpResponseMessage response = await httpClient.GetAsync("https://official-joke-api.appspot.com/random_joke");
+                response.EnsureSuccessStatusCode(); // Permet de lever une exception si l'appel n'a pas renvoyé une réponse valable
+
+                return await response.Content.ReadAsStringAsync();
+            }
         }
     }
 
