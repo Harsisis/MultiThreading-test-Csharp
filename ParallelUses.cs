@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace TaskTest {
     public static class ParallelUses {
@@ -44,6 +45,18 @@ namespace TaskTest {
             });
             Console.WriteLine("{0} Out of method SumListNumbersUsingParallelInvokeAndAggregate", DateTime.Now);
             return sum;
+        }
+
+        public static void ReadFilesAmount() {
+            string file1Path = @"D:\Travail\C#\MNS\TaskTest\TaskTest\file1.txt";
+            string file2Path = @"D:\Travail\C#\MNS\TaskTest\TaskTest\file2.txt";
+
+            Parallel.Invoke(() => {
+                Console.WriteLine("number of lines in {0} is {1}", file1Path, File.ReadLines(file1Path).Count());
+            },
+            () => {
+                Console.WriteLine("number of lines in {0} is {1}", file2Path, File.ReadLines(file2Path).Count());
+            });
         }
     }
 }
